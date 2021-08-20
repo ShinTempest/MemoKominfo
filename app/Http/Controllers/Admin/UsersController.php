@@ -70,7 +70,7 @@ class UsersController extends Controller
     public function destroy(User $user)
     {
         abort_if(Gate::denies('user_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
+        $user->update(['email'=>'delete'.$user->id]);
         $user->delete();
 
         return back();

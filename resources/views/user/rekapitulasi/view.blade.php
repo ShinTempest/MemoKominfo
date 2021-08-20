@@ -3,7 +3,7 @@
 <style>
     body {
         height: 100%;
-        background-color: #F3F8FF;
+        background-image:url('{{url('images/background_login.png')}}');
         background-repeat: no-repeat;
         background-attachment: fixed;
         background-size: cover;
@@ -19,13 +19,18 @@
 <div class="content-page">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-9">
-                <h1 class="font-weight-bold" style="color: #0C355A">Monitoring Media</h1>
+            <div class="col-lg-12">
+                <h1 class="font-weight-bold m-2" style="color: #0C355A">Monitoring Media</h1>
             </div>
-            <div class="col-lg-12 mt-5 mb-3">
-                <a href="{{ route('user.pelaporan.index')}}" class="btn btn-lapor item-center">Tambah Laporan<i class="fa fa-plus-circle pl-2" aria-hidden="true"></i></a>
+            <div class="col-lg-4 mt-5 mb-3">
+                <a href="{{ route('user.pelaporan.index')}}" class="btn btn-lapor item-center"><i class="fa fa-plus-circle" aria-hidden="true"></i> Tambah Laporan</a>
             </div>
         </div><br>
+        <div class="card" style="background-color:#FFFFFF">
+            <div class="card-header">
+                Daftar Rekapitulasi
+        </div>
+        <div class="card-body" style="background-color:#F3F8FF">
         <div class="table-responsive">
             <table class=" table table-bordered table-striped table-hover datatable datatable-User">
                 <thead class="thead-blue">
@@ -87,7 +92,7 @@
                                 {{ trans('global.edit') }}
                             </a>
 
-                            <form action="" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                            <form action="{{route('user.rekapitulasi.destroy', $datas->id)}}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                 <input type="hidden" name="_method" value="DELETE">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
@@ -97,6 +102,7 @@
                 @endforeach
                 </tbody>
             </table>
+        </div>
         </div>
     </div>
 </div>
@@ -109,35 +115,35 @@
     $(function () {
     let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
 
-@can('user_delete')
-  let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
-  let deleteButton = {
-    text: deleteButtonTrans,
-    url: "{{ route('admin.users.massDestroy') }}",
-    className: 'btn-danger',
-    action: function (e, dt, node, config) {
-      var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
-          return $(entry).data('entry-id')
-      });
+// @can('user_delete')
+//   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
+//   let deleteButton = {
+//     text: deleteButtonTrans,
+//     url: "{{ route('admin.users.massDestroy') }}",
+//     className: 'btn-danger',
+//     action: function (e, dt, node, config) {
+//       var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
+//           return $(entry).data('entry-id')
+//       });
 
-      if (ids.length === 0) {
-        alert('{{ trans('global.datatables.zero_selected') }}')
+//       if (ids.length === 0) {
+//         alert('{{ trans('global.datatables.zero_selected') }}')
 
-        return
-      }
+//         return
+//       }
 
-      if (confirm('{{ trans('global.areYouSure') }}')) {
-        $.ajax({
-          headers: {'x-csrf-token': _token},
-          method: 'POST',
-          url: config.url,
-          data: { ids: ids, _method: 'DELETE' }})
-          .done(function () { location.reload() })
-      }
-    }
-  }
-  dtButtons.push(deleteButton)
-@endcan
+//       if (confirm('{{ trans('global.areYouSure') }}')) {
+//         $.ajax({
+//           headers: {'x-csrf-token': _token},
+//           method: 'POST',
+//           url: config.url,
+//           data: { ids: ids, _method: 'DELETE' }})
+//           .done(function () { location.reload() })
+//       }
+//     }
+//   }
+//   dtButtons.push(deleteButton)
+// @endcan
 
   $.extend(true, $.fn.dataTable.defaults, {
     orderCellsTop: true,

@@ -18,16 +18,11 @@
 
 <div class="card">
     <div class="card-header">
-        Data Pengguna
+        <h5 class="text-left m-2">Data Pengguna</h5>
     </div>
 
     <div class="card-body">
         <div class="form-group">
-            <div class="form-group">
-                <a class="btn btn-primary" href="{{ route('admin.users.index') }}">
-                    Kembali
-                </a>
-            </div>
             <table class="table table-bordered table-striped mt-3">
                 <tbody>
                     <tr>
@@ -66,6 +61,11 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+        <div class="form-group">
+            <a class="btn btn-danger" href="{{ route('admin.users.index') }}">
+                Kembali
+            </a>
         </div>
     </div>
 </div>

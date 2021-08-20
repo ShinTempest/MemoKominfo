@@ -11,12 +11,16 @@ class ViewController extends Controller
     public function view($id) 
     {
         $data = Pelaporan::where('id', $id)->get();
-        return view('user.rekapitulasi.detail', compact('data'));
+        return view('user.rekapitulasi.detail', compact('data', 'id'));
     }
 
-    public function cetak_pdf()
+    public function cetak_pdf($id)
     {
-    	$pdf = PDF::loadview('user.rekapitulasi.detail');
-    	return $pdf->download('laporan-pdf');
+        $data = Pelaporan::where('id', $id)->get();
+        
+    	$pdf = PDF::setOptions([
+            'images' => true
+        ])->loadview('user.rekapitulasi.detailpdf', ['data'=>$data]);
+    	return $pdf->download('laporan.pdf');
     }
 }

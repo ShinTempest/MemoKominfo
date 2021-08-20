@@ -13,9 +13,9 @@
 
 <div class="content-page">
     <div class="container">
-        <div class="card">
-            <div class="card-header d-flex justify-content-between" style="background-color:#F3F8FF">
-               <div class="header-title">
+        <div class="card" style="background-color:#F3F8FF">
+            <div class="card-header d-flex justify-content-between" style="background-color:#FFFFFF">
+               <div class="header-title m-2">
                   <h4 class="card-title m-2">Edit Profil</h4>
                </div>
             </div>
@@ -72,7 +72,7 @@
                         </div>
 
                     <div class="float-right p-4">
-                        <a class="btn btn-primary m-2" href="{{ route('user.profil.index') }}">Batalkan</a>
+                        <a class="btn btn-danger m-2" href="{{ route('user.profil.index') }}">Batalkan</a>
                         <input class="btn btn-success m-2" type="submit" value="Simpan">
                     </div>
                 </form>

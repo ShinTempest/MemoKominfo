@@ -21,6 +21,8 @@ Route::group([
     Route::get('/rekapitulasi/detail', 'RekapitulasiController@detail');
     Route::resource('rekapitulasi', 'RekapitulasiController');
 
+    Route::get('/rekapitulasi/cetak_pdf/{id}', [ViewController::class, 'cetak_pdf']) -> name('cetak_pdf');
+
     Route::get('/rekapitulasi-detail/{id}', [ViewController::class,'view']);
 
    

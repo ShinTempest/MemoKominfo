@@ -133,16 +133,25 @@ class RekapitulasiController extends Controller
         ]);
 
         if($request->hasFile('upload_gambar')){
-            // $filenameWithExt = $request->file('upload_gambar')->getClientOriginalName();
-            // $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            // $extension = $request->file('upload_gambar')->getClientOriginalExtension();
-            // $filenameSimpan = $filename.'_'.time().'.'.$extension;
-            // $path = $request->file('upload_gambar')->storeAs('images/', $filenameSimpan);
             $path_file = 'images/';
             $store_file = date('YmdHis') . "." . $request->upload_gambar->getClientOriginalExtension();
             $request->upload_gambar->move($path_file, $store_file);
-        }else{
-            return $request;
+
+            DB::table('berita')
+            ->where('id',$id)
+            ->update([
+                'judul_berita' => $request['judul'],
+                'kategori_berita' => $request['kategori_berita'],
+                'isi_berita' => $request['isi_berita'],
+                'media' => $request['media'],
+                'jenis_berita' => $request['inlineRadioOptions'],
+                'saran' => $request['saran'],
+                'upload_gambar' => $store_file, 
+            ]);
+        return redirect()->back()->back()->with([
+            'status'=>'success',
+            'message'=>'Berhasil mengedit laporan'
+        ]);
         }
 
         DB::table('berita')
@@ -153,13 +162,11 @@ class RekapitulasiController extends Controller
                 'isi_berita' => $request['isi_berita'],
                 'media' => $request['media'],
                 'jenis_berita' => $request['inlineRadioOptions'],
-                'saran' => $request['saran'],
-                'upload_gambar' => $store_file, 
-                'user_id' => Auth::id()
+                'saran' => $request['saran'], 
             ]);
-        return redirect()->route('user.pelaporan.index')->with([
+        return redirect()->route('user.rekapitulasi.index')->with([
             'status'=>'success',
-            'message'=>'Berhasil membuat laporan'
+            'message'=>'Berhasil mengedit laporan'
         ]);
     }
 
@@ -171,6 +178,10 @@ class RekapitulasiController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Pelaporan::where('id', $id)->delete();
+        return redirect()->back()->with([
+            'status'=>'success',
+            'message'=>'Berhasil dihapus'
+        ]);;
     }
 }

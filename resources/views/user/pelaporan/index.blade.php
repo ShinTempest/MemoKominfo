@@ -3,16 +3,17 @@
 <style>
     body {
         height: 100%;
-        background-color: #F3F8FF;
+        background-image:url('{{url('images/background_login.png')}}');
         background-repeat: no-repeat;
         background-attachment: fixed;
         background-size: cover;
     }
 </style>
+
 <div class="content-page">
     <div class="container-fluid">
-        <div class="card">
-            <div class="card-header d-flex justify-content-between">
+        <div class="card" style="background-color:#F3F8FF">
+            <div class="card-header d-flex justify-content-between" style="background-color:#FFFFFF">
                <div class="header-title">
                   <h5 class="card-title m-2">Pelaporan Berita</h5>
                </div>
@@ -38,10 +39,10 @@
                                         <div class="form-group dropdown">
                                             <label class="font-weight-bold" for="sel1">Kategori Berita</label>
                                                 <select class="form-control input-sm border border-dark" id="kategori_berita" name="kategori_berita">
-                                                    <option>1</option>
-                                                    <option>2</option>
-                                                    <option>3</option>
-                                                    <option>4</option>
+                                                    <option>Edy Rahmayadi</option>
+                                                    <option>Musa Rajekshah</option>
+                                                    <option>Pemprovsu</option>
+                                                    <option>SUMUT</option>
                                                 </select>
                                         </div> 
                                 </div>
@@ -55,16 +56,21 @@
                                             <label class="font-weight-bold" for="media">Media</label>
                                             <br>
                                             <select multiple class="drop-media" id="choices-multiple-remove-button" name="media" placeholder="Pilih media berita.." >
-                                                <option value="n1">1</option>
-                                                <option value="n2">2</option>
-                                                <option value="n3">3</option>
-                                                <option value="n4">4</option>
-                                                <option value="n5">5</option>
-                                                <option value="n6">6</option>
-                                                <option value="n7">7</option>
-                                                <option value="n8">8</option>
-                                                <option value="n9">9</option>
-                                                <option value="n0">0</option>
+                                                <option value="tribunnews.com">tribunnews.com</option>
+                                                <option value="detik.com">detik.com</option>
+                                                <option value="kompas.com">kompas.com</option>
+                                                <option value="okezone.com">okezone.com</option>
+                                                <option value="merdeka.com">merdeka.com</option>
+                                                <option value="liputan6.com">liputan6.com</option>
+                                                <option value="tempo.co">tempo.co</option>
+                                                <option value="ndtv.com">ndtv.com</option>
+                                                <option value="portal-news.co.id">portal-news.co.id</option>
+                                                <option value="sindonews.com">sindonews.com</option>
+                                                <option value="kompasiana.com">kompasiana.com</option>
+                                                <option value="beritasatu.com">beritasatu.com</option>
+                                                <option value="metrotvnews.com">metrotvnews.com</option>
+                                                <option value="suaranews.com">suaranews.com</option>
+                                                <option value="suaramerdeka.com">suaramerdeka.com</option>
                                             </select>
                                         </div>
 
@@ -98,7 +104,7 @@
                                         <br><br>                                      
                                 </div>
                                 <div class="col-lg-12 d-flex justify-content-end">
-                                    <input class="btn btn-primary mr-4" type="reset" value="Batalkan">
+                                    <input class="btn btn-danger mr-2" type="reset" value="Batalkan">
                                     <input class="btn btn-primary" type="submit" value="Simpan">
                                 </div>
                             </div>

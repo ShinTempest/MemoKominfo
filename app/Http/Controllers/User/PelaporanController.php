@@ -57,11 +57,6 @@ class PelaporanController extends Controller
         ]);
 
         if($request->hasFile('upload_gambar')){
-            // $filenameWithExt = $request->file('upload_gambar')->getClientOriginalName();
-            // $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            // $extension = $request->file('upload_gambar')->getClientOriginalExtension();
-            // $filenameSimpan = $filename.'_'.time().'.'.$extension;
-            // $path = $request->file('upload_gambar')->storeAs('images/', $filenameSimpan);
             $path_file = 'images/';
             $store_file = date('YmdHis') . "." . $request->upload_gambar->getClientOriginalExtension();
             $request->upload_gambar->move($path_file, $store_file);

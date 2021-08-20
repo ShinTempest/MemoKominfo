@@ -11,8 +11,8 @@
 </style>
 <div class="content-page">
     <div class="container-fluid">
-        <div class="card">
-            <div class="card-header d-flex justify-content-between">
+        <div class="card" style="background-color:#F3F8FF">
+            <div class="card-header d-flex justify-content-between" style="background-color:#FFFFFF">
                <div class="header-title">
                   <h5 class="card-title m-2">Edit Pelaporan</h5>
                </div>
@@ -93,7 +93,7 @@
                                         <br><br>                                      
                                 </div>
                                 <div class="col-lg-12 d-flex justify-content-end">
-                                    <a class="btn btn-primary mr-4" style="color:white" href={{url('/user/rekapitulasi/view')}}>Batalkan</a>
+                                    <a class="btn btn-danger mr-3" style="color:white" href={{url('/user/rekapitulasi/view')}}>Batalkan</a>
                                     <input class="btn btn-primary" type="submit" value="Simpan">
                                 </div>
                             </div>

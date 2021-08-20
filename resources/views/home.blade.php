@@ -23,7 +23,7 @@ body {
                 </div>
                 
             <div class="col-lg-12 pt-2 mb-5 center">
-                <a href="{{ route('user.pelaporan.index') }}" class="btn btn-lapor item-center">Tambahkan Laporan<i class="fa fa-plus-circle pl-2" aria-hidden="true"></i></a>
+                <a href="{{ route('user.pelaporan.index') }}" class="btn btn-lapor item-center"><i class="fa fa-plus-circle" aria-hidden="true"></i> Tambahkan Laporan</a>
             </div><br>
 
             <div class="col-lg-12 col-md-12">

@@ -17,7 +17,7 @@
 </style>
 <div class="card">
     <div class="card-header">
-        Edit Pengguna
+        <h5 class="text-left m-2">Edit Pengguna</h5>
     </div>
 
     <div class="card-body">
@@ -73,7 +73,7 @@
                 <span class="help-block">{{ trans('cruds.user.fields.roles_helper') }}</span>
             </div>
             <div class="form-group">
-                <a class="btn btn-primary" href="{{ route('admin.users.index') }}">Kembali</a>
+                <a class="btn btn-danger" href="{{ route('admin.users.index') }}">Kembali</a>
                 <button class="btn btn-success" type="submit">Simpan</button>
             </div>
         </form>

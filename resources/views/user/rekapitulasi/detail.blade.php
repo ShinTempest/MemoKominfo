@@ -11,13 +11,13 @@
 </style>
 <div class="content-page">
     <div class="container-fluid">
-    <a class="btn btn-primary mb-3 mt-3" style="color:white" href={{url('/user/rekapitulasi/view')}}>Kembali</a><br>
+    <a class="btn btn-danger mb-3 mt-3" style="color:white" href={{url('/user/rekapitulasi/view')}}>Kembali</a><br>
         <div class="card">
             <div class="card-header d-flex justify-content-between">
                <div class="header-title">
                   <h5 class="card-title m-2" style="font-weight:bold">Data Berita Harian</h5>
                </div>
-               <a class="btn btn-success m-1" href="/user/rekapitulasi-detail/{id}" style="text-center" > <i class="fas fa-file-pdf"></i> Cetak PDF </a>
+               <a class="btn btn-success m-1" href="{{route('user.cetak_pdf', $id)}}" target="_blank"> <i class="fas fa-file-pdf"></i> Cetak PDF </a>
             </div>
             <div class="card-body">
                 
