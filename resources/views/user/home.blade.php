@@ -15,7 +15,7 @@ body {
                     <h1 class="text-left font-weight-600">Selamat Datang {{$user->name}}</h1>
                 </div>
                 <div class="col-lg-3 d-flex justify-content-end">
-                        <p class="" id="time"></p>
+                    <p class="" id="time"></p>
                         <div>
                         <p class="text-end" id="date"></p>
                         </div>
