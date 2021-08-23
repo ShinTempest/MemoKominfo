@@ -8,6 +8,13 @@
         background-attachment: fixed;
         background-size: cover;
     }
+    .date {
+        margin: 20px 10px 20px 10px;
+    }
+
+    .date .datepicker-days tr {
+        height: 50px;
+    }
 </style>
 
 <div class="content-page">
@@ -16,182 +23,133 @@
             <div class="col-lg-5">
                 <div class="card">
                     <div class="card-body">
-                        <h5>Kategori</h5>
+                        <h5 class="blue-font">Kategori</h5>
                         <div class="dropdown">
-                            <select class="form-control input-sm" id="kategori_berita" name="kategori_berita" style="background-color: #F3F8FF">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
+                            <select class="form-control input-sm" id="kategori_berita" name="kategori_berita" style="background-color: #F3F8FF" onchange="updateChart()">
+                                <option value="0">Semua</option>
+                                <option value="1">Edy Rahmayadi</option>
+                                <option value="2">Musa Rajekshah</option>
+                                <option value="3">Pemprovsu</option>
+                                <option value="4">Sumut</option>
                             </select>
                         </div>
                     </div>
                 </div>
-                <div>
-                    <input type="date" name="tanggal" id="tanggal">
+                <div class="card">
+                    <div class="date" id="tanggal"></div>
                 </div>
             </div>
             <div class="col-lg-7">
                 <div>
-                    <h3 class="font-weight-bold" id="date"></h3>
+                    <h3 class="font-weight-bold blue-font" id="date"></h3>
                 </div><br>
                 <div>
-                    <h5 class="text-left font-weight-300">Grafik Hari Ini 
+                    <h5 class="text-left font-weight-300 blue-font">Grafik Hari Ini
                         <span class="float-right fs-2"><a href="{{ route('user.rekapitulasi.index')}}/view">Lihat detail</a></span></h5>
                 </div>
                 <div class="card">
-                    <div class="card-body">                        
-                        <canvas id="chLine" width="50px " height="13px"></canvas>
+                    <div class="card-body">
+                        <canvas id="chLine" width="50px" height="13px"></canvas>
                     </div>
                 </div>
                 <div>
-                    <h5 class="text-left font-weight-300">Grafik Minggu Ini
+                    <h5 class="text-left font-weight-300 blue-font">Grafik Minggu Ini</h5>
                 </div>
                 <div class="card">
-                    <div class="card-body">                        
-                        <canvas id="chLine1" width="50px " height="13px"></canvas>
+                    <div class="card-body">
+                        <canvas id="chLine1" width="50px" height="13px"></canvas>
                     </div>
                 </div>
                 <div>
-                    <h5 class="text-left font-weight-300">Grafik Bulan Ini
+                    <h5 class="text-left font-weight-300 blue-font">Grafik Bulan Ini</h5>
                 </div>
                 <div class="card">
-                    <div class="card-body">                        
-                        <canvas id="chLine2" width="50px " height="13px"></canvas>
+                    <div class="card-body">
+                        <canvas id="chLine2" width="50px" height="13px"></canvas>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 @endsection
+
 @section('scripts')
 <script>
-    var dt = new Date();
-    const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-    document.getElementById("date").innerHTML = (days[dt.getDay()]) +","+ "  "+ (("0"+dt.getDate()).slice(-2)) +"."+ (("0"+(dt.getMonth()+1)).slice(-2)) +"."+ (dt.getFullYear());
+    function updateDate(date) {
+        var dt = new Date(date);
+        const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+        document.getElementById("date").innerHTML = (days[dt.getDay()]) +","+ "  "+ (("0"+dt.getDate()).slice(-2)) +"."+ (("0"+(dt.getMonth()+1)).slice(-2)) +"."+ (dt.getFullYear());
+    }
+
+    function createChart(chLineLabel, chLinePositifData, chLineNegatifData, chLineElementId) {
+        var colors = ['#007bff','#333333'];
+        var chLineData = {
+            labels: chLineLabel,
+            datasets: [{
+                data: chLinePositifData,
+                label: 'Berita Positif',
+                backgroundColor: 'transparent',
+                borderColor: colors[0],
+                pointBackgroundColor: colors[0],
+            }, {
+                data: chLineNegatifData,
+                label: 'Berita Negatif',
+                backgroundColor: 'transparent',
+                borderColor: colors[1],
+                pointBackgroundColor: colors[1],
+            }],
+        };
+        var chartOptions = {
+            type: 'line',
+            data: chLineData,
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: false,
+                        }
+                    }],
+                },
+                legend: {
+                    display: true,
+                    position:'bottom',
+                }
+            }
+        }
+
+        var chLine = document.getElementById(chLineElementId);
+        if (chLine) new Chart(chLine, chartOptions);
+    }
+
+    function updateChart(date) {
+        if (!date) {
+            var tzoffset = (new Date()).getTimezoneOffset() * 60000;
+            date = new Date(Date.now() - tzoffset).toISOString().slice(0, 10);
+        }
+
+        updateDate(date);
+
+        var selectedKategori = $("select#kategori_berita").children("option:selected").val();
+
+        $.get('/user/rekapitulasi/get_harian/' + date + '/' + selectedKategori, function(response) {
+            chLineLabel = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
+            createChart(chLineLabel, response.harian_positif, response.harian_negatif, "chLine");
+        });
+
+        $.get('/user/rekapitulasi/get_mingguan/' + date + '/' + selectedKategori, function(response) {
+            chLine1Label = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+            createChart(chLine1Label, response.mingguan_positif, response.mingguan_negatif, "chLine1");
+        });
+
+        $.get('/user/rekapitulasi/get_bulanan/' + date + '/' + selectedKategori, function(response) {
+            var daysInMonth = new Date(2021, 8, 0).getDate(), chLine2Label = [];
+            for (var i = 1; i <= daysInMonth; i++) chLine2Label.push(i);
+            createChart(chLine2Label, response.bulanan_positif, response.bulanan_negatif, "chLine2");
+        });
+    }
+
+    updateChart();
 </script>
 
-<script>
-    var colors = ['#007bff','#28a745','#333333','#c3e6cb','#dc3545','#6c757d'];
-    var chartData = {
-            labels: ["S", "M", "T", "W", "T", "F", "S"],
-            datasets: [{
-                label: 'Berita Positif',
-                data: [589, 283, 183, 503, 689, 492, 634],
-                backgroundColor: 'transparent',
-                borderColor: colors[0],
-                pointBackgroundColor: colors[0]
-            },
-            {   
-                label: 'Berita Negatif',
-                data: [339, 465, 493, 278, 389, 632, 374],
-                backgroundColor: 'transparent',
-                borderColor: colors[2],
-                pointBackgroundColor: colors[2]
-            }]
-    };
-    var chLine = document.getElementById("chLine");
-    if (chLine) {
-        new Chart(chLine, {
-        type: 'line',
-        data: chartData,
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: false
-                    }
-                }]
-            },
-            legend: {
-                display: true,
-                position:'bottom'
-            }
-        }
-        });
-    }
-</script>
-<script>
-    var colors = ['#007bff','#28a745','#333333','#c3e6cb','#dc3545','#6c757d'];
-    var chartData = {
-            labels: ["S", "M", "T", "W", "T", "F", "S"],
-            datasets: [{
-                label: 'Berita Positif',
-                data: [{{$positif[0]}}, {{$positif[1]}}, {{$positif[2]}}, {{$positif[3]}}, {{$positif[4]}}, {{$positif[5]}}, {{$positif[6]}}],
-                backgroundColor: 'transparent',
-                borderColor: colors[0],
-                pointBackgroundColor: colors[0]
-            },
-            {   
-                label: 'Berita Negatif',
-                data: [{{$negatif[0]}}, {{$negatif[1]}}, {{$negatif[2]}}, {{$negatif[3]}}, {{$negatif[4]}}, {{$negatif[5]}}, {{$negatif[6]}}],
-                backgroundColor: 'transparent',
-                borderColor: colors[2],
-                pointBackgroundColor: colors[2]
-            }]
-    };
-    var chLine = document.getElementById("chLine1");
-    if (chLine1) {
-        new Chart(chLine1, {
-        type: 'line',
-        data: chartData,
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: false
-                    }
-                }]
-            },
-            legend: {
-                display: true,
-                position:'bottom'
-            }
-        }
-        });
-    }
-</script>
-
-<script>
-    var colors = ['#007bff','#28a745','#333333','#c3e6cb','#dc3545','#6c757d'];
-    var chartData = {
-            labels: ["S", "M", "T", "W", "T", "F", "S"],
-            datasets: [{
-                label: 'Berita Positif',
-                data: [589, 283, 183, 503, 689, 492, 634],
-                backgroundColor: 'transparent',
-                borderColor: colors[0],
-                pointBackgroundColor: colors[0]
-            },
-            {   
-                label: 'Berita Negatif',
-                data: [339, 465, 493, 278, 389, 632, 374],
-                backgroundColor: 'transparent',
-                borderColor: colors[2],
-                pointBackgroundColor: colors[2]
-            }]
-    };
-    var chLine = document.getElementById("chLine2");
-    if (chLine2) {
-        new Chart(chLine2, {
-        type: 'line',
-        data: chartData,
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: false
-                    }
-                }]
-            },
-            legend: {
-                display: true,
-                position:'bottom'
-            }
-        }
-        });
-    }
-</script>
 @endsection

@@ -16,6 +16,9 @@
         border-color: #dee2e6;
     }
 </style>
+    <div class="row" style="margin-bottom: 10px">
+        <h1 class="text-left font-weight-600 blue-font"><b>Kelola Anggota</b></h1>
+    </div>
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
             <a class="btn btn-success" href="{{ route('admin.users.create') }}"><i class="fas fa-user-plus"></i> Tambah Anggota</a>

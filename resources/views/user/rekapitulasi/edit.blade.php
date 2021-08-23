@@ -38,11 +38,11 @@
                                 <div class="col-5">
                                         <div class="form-group dropdown">
                                             <label class="font-weight-bold" for="sel1">Kategori Berita</label>
-                                                <select class="form-control input-sm border border-dark" id="kategori_berita" value="{{$datas -> kategori_berita}}" name="kategori_berita">
-                                                    <option>1</option>
-                                                    <option>2</option>
-                                                    <option>3</option>
-                                                    <option>4</option>
+                                                <select class="form-control input-sm border border-dark" id="kategori_berita" name="kategori_berita">
+                                                    <option value="1">Edy Rahmayadi</option>
+                                                    <option value="2">Musa Rajekshah</option>
+                                                    <option value="3">Pemprovsu</option>
+                                                    <option value="4">Sumut</option>
                                                 </select>
                                         </div> 
                                 </div>
@@ -56,16 +56,31 @@
                                             <label class="font-weight-bold" for="media">Media</label>
                                             <br>
                                             <select multiple class="drop-media" id="choices-multiple-remove-button" name="media" placeholder="Pilih media berita.." >
-                                                <option value="n1">1</option>
-                                                <option value="n2">2</option>
-                                                <option value="n3">3</option>
-                                                <option value="n4">4</option>
-                                                <option value="n5">5</option>
-                                                <option value="n6">6</option>
-                                                <option value="n7">7</option>
-                                                <option value="n8">8</option>
-                                                <option value="n9">9</option>
-                                                <option value="n0">0</option>
+                                                <option value="detik.com">detik.com</option>
+                                                <option value="Kompas.com">Kompas.com</option>
+                                                <option value="Kumparan.com">Kumparan.com</option>
+                                                <option value="CNNIndonesia.com">CNNIndonesia.com</option>
+                                                <option value="Antaranews.com">Antaranews.com</option>
+                                                <option value="Analisadaily.com">Analisadaily.com</option>
+                                                <option value="Waspada.co.id">Waspada.co.id</option>
+                                                <option value="Mudanews.com">Mudanews.com</option>
+                                                <option value="Medan.Tribunnews.com">Medan.Tribunnews.com</option>
+                                                <option value="Realitasonline.i">Realitasonline.id</option>
+                                                <option value="Metropublik.com">Metropublik.com</option>
+                                                <option value="Orbitbisnisdaily.com">Orbitbisnisdaily.com</option>
+                                                <option value="Medanbisnisdaily.com">Medanbisnisdaily.com</option>
+                                                <option value="gosumut.com">gosumut.com</option>
+                                                <option value="intipos.com">intipos.com</option>
+                                                <option value="Rmolsumut.id">Rmolsumut.id</option>
+                                                <option value="kabarmedan.com">kabarmedan.com</option>
+                                                <option value="Kliksumut.com">Kliksumut.com</option>
+                                                <option value="asarpua.com">asarpua.com</option>
+                                                <option value="eksisnews.com">eksisnews.com</option>
+                                                <option value="deteksi.co">deteksi.co</option>
+                                                <option value="medanmerdeka.com">medanmerdeka.com</option>
+                                                <option value="medanmerdeka.com">medanmerdeka.com</option>
+                                                <option value="sumutcyber.com">sumutcyber.com</option>
+                                                <option value="matabangsa.com">matabangsa.com</option>
                                             </select>
                                         </div>
 

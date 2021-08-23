@@ -55,5 +55,5 @@
         </ul>
 
     </nav>
-    <button class="sidebar-minimizer" type="button"></button>
+    <!-- <button class="sidebar-minimizer" type="button"></button> -->
 </div>

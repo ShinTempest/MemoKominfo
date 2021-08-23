@@ -19,16 +19,18 @@ Route::group([
     Route::resource('pelaporan', 'PelaporanController');
 
     Route::get('/rekapitulasi/detail', 'RekapitulasiController@detail');
+    Route::get('/rekapitulasi/get_harian/{tanggal}/{kategori}', 'RekapitulasiController@get_harian');
+    Route::get('/rekapitulasi/get_mingguan/{tanggal}/{kategori}', 'RekapitulasiController@get_mingguan');
+    Route::get('/rekapitulasi/get_bulanan/{tanggal}/{kategori}', 'RekapitulasiController@get_bulanan');
     Route::resource('rekapitulasi', 'RekapitulasiController');
 
     Route::get('/rekapitulasi/cetak_pdf/{id}', [ViewController::class, 'cetak_pdf']) -> name('cetak_pdf');
-
     Route::get('/rekapitulasi-detail/{id}', [ViewController::class,'view']);
-
-   
 
     Route::resource('profil', 'ProfilController');
 
+    Route::get('/pencarian/index/{keyword}', 'PencarianController@index');
+    Route::resource('pencarian', 'PencarianController@index');
 });
 
 Route::group([
@@ -38,7 +40,7 @@ Route::group([
     'middleware' => ['auth', 'admin']
 ], function () {
     Route::get('/', 'HomeController@index')->name('home');
-    
+
     //Permissions
     Route::delete('permissions/destroy', 'PermissionsController@massDestroy')->name('permissions.massDestroy');
     Route::resource('permissions', 'PermissionsController');
@@ -50,9 +52,8 @@ Route::group([
     //Users
     Route::delete('users/destroy', 'UsersController@massDestroy')->name('users.massDestroy');
     Route::resource('users', 'UsersController');
-
-
 });
+
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function () {
 // Change password
     if (file_exists(app_path('Http/Controllers/Auth/ChangePasswordController.php'))) {

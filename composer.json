@@ -20,7 +20,8 @@
         "laravel/passport": "^8.4",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
-        "yajra/laravel-datatables-oracle": "^9.9"
+        "yajra/laravel-datatables-oracle": "^9.9",
+        "ext-calendar": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

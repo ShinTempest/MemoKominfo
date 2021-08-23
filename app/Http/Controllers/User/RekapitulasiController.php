@@ -9,7 +9,6 @@ use App\RoleUser;
 use App\Pelaporan;
 use Illuminate\Support\Facades\DB;
 
-
 class RekapitulasiController extends Controller
 {
     /**
@@ -22,32 +21,129 @@ class RekapitulasiController extends Controller
         $id_user = auth()->user()->id;
         $user = User::find($id_user);
         $role_user = RoleUser::find($id_user);
-        $berita_positif = DB::select("select DAYNAME(updated_at) as 'day', count(updated_at) as 'jumlah' from berita where jenis_berita = 'positif'group by day");
-        $berita_negatif = DB::select("select DAYNAME(updated_at) as 'day', count(updated_at) as 'jumlah' from berita where jenis_berita = 'negatif'group by day");
-        $i = 0;
-        $dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];;
-        $positif = array(0,0,0,0,0,0,0);
-        $negatif = array(0,0,0,0,0,0,0);
-        foreach($dayNames as $hari){
-            foreach($berita_positif as $data){
-                if($hari == $data->day){
-                        $positif[$i] = $data->jumlah;
-                }  
-            }
-            $i++;
-        }
-        $i =0;
-        foreach($dayNames as $hari){
-            foreach($berita_negatif as $data){
-                if($hari == $data->day){
-                        $negatif[$i] = $data->jumlah;
-                }  
 
-            }  
-            $i++;
+        return view('user.rekapitulasi.index', compact('user', 'role_user'));
+    }
+
+    public function get_harian(Request $request, $tanggal, $kategori = 0)
+    {
+        $harian = $this->harian($tanggal, $kategori);
+
+        return response()->json([
+            "harian_positif" => $harian[0],
+            "harian_negatif" => $harian[1],
+        ]);
+    }
+
+    public function harian($tanggal, $kategori)
+    {
+        $kategoriFilter = "";
+        if ($kategori != 0) $kategoriFilter = " AND kategori_berita=$kategori";
+
+        $berita_positif = DB::select("SELECT HOUR(updated_at) AS hour, count(updated_at) AS jumlah FROM berita WHERE jenis_berita = 'positif' AND DAY(updated_at) = DAY('$tanggal') $kategoriFilter GROUP BY hour");
+        $berita_negatif = DB::select("SELECT HOUR(updated_at) AS hour, count(updated_at) AS jumlah FROM berita WHERE jenis_berita = 'negatif' AND DAY(updated_at) = DAY('$tanggal') $kategoriFilter GROUP BY hour");
+
+        $positif = $negatif = array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+
+        $hours = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
+        for ($i = 0; $i < count($hours); $i++) {
+            foreach ($berita_positif as $data) {
+                if ($hours[$i] == $data->hour) {
+                    $positif[$i] = $data->jumlah;
+                }
+            }
+
+            foreach ($berita_negatif as $data) {
+                if ($hours[$i] == $data->hour) {
+                    $negatif[$i] = $data->jumlah;
+                }
+            }
         }
-         
-        return view('user.rekapitulasi.index', compact('user','role_user', 'positif', 'negatif'));
+
+        return array($positif, $negatif);
+    }
+
+    public function get_mingguan(Request $request, $tanggal, $kategori = 0)
+    {
+        $mingguan = $this->mingguan($tanggal, $kategori);
+
+        return response()->json([
+            "mingguan_positif" => $mingguan[0],
+            "mingguan_negatif" => $mingguan[1],
+        ]);
+    }
+
+    public function mingguan($tanggal, $kategori)
+    {
+        $kategoriFilter = "";
+        if ($kategori != 0) $kategoriFilter = " AND kategori_berita=$kategori";
+
+        $berita_positif = DB::select("SELECT DAYNAME(updated_at) AS dayName, count(updated_at) AS jumlah FROM berita WHERE jenis_berita = 'positif' AND WEEK(updated_at) = WEEK('$tanggal') $kategoriFilter GROUP BY dayName");
+        $berita_negatif = DB::select("SELECT DAYNAME(updated_at) AS dayName, count(updated_at) AS jumlah FROM berita WHERE jenis_berita = 'negatif' AND WEEK(updated_at) = WEEK('$tanggal') $kategoriFilter GROUP BY dayName");
+
+        $positif = $negatif = array(0, 0, 0, 0, 0, 0, 0);
+
+        $dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        for ($i = 0; $i < count($dayNames); $i++) {
+            foreach ($berita_positif as $data) {
+                if ($dayNames[$i] == $data->dayName) {
+                    $positif[$i] = $data->jumlah;
+                }
+            }
+
+            foreach ($berita_negatif as $data) {
+                if ($dayNames[$i] == $data->dayName) {
+                    $negatif[$i] = $data->jumlah;
+                }
+            }
+        }
+
+        return array($positif, $negatif);
+    }
+
+    public function get_bulanan(Request $request, $tanggal, $kategori = 0)
+    {
+        $bulanan = $this->bulanan($tanggal, $kategori);
+
+        return response()->json([
+            "bulanan_positif" => $bulanan[0],
+            "bulanan_negatif" => $bulanan[1],
+        ]);
+    }
+
+    public function bulanan($tanggal, $kategori)
+    {
+        $kategoriFilter = "";
+        if ($kategori != 0) $kategoriFilter = " AND kategori_berita=$kategori";
+
+        $berita_positif = DB::select("SELECT DAY(updated_at) AS day, count(updated_at) AS jumlah FROM berita WHERE jenis_berita = 'positif' AND MONTH(updated_at) = MONTH('$tanggal') $kategoriFilter GROUP BY day");
+        $berita_negatif = DB::select("SELECT DAY(updated_at) AS day, count(updated_at) AS jumlah FROM berita WHERE jenis_berita = 'negatif' AND MONTH(updated_at) = MONTH('$tanggal') $kategoriFilter GROUP BY day");
+
+        $numberOfDays = cal_days_in_month(CAL_GREGORIAN,8,2021);
+
+        $dayNumbers = $positif = $negatif = array();
+        for ($i = 1; $i <= $numberOfDays; $i++) {
+            array_push($dayNumbers, $i);
+            array_push($positif, 0);
+        }
+        $negatif = $positif;
+
+        for ($i = 0; $i < count($dayNumbers); $i++) {
+            foreach ($berita_positif as $data) {
+                if ($dayNumbers[$i] == $data->day) {
+                    $positif[$i] = $data->jumlah;
+                }
+            }
+
+            foreach ($berita_negatif as $data) {
+                if ($dayNumbers[$i] == $data->day) {
+                    $negatif[$i] = $data->jumlah;
+                }
+
+            }
+        }
+
+        return array($positif, $negatif);
     }
 
     /**
@@ -63,7 +159,7 @@ class RekapitulasiController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -74,7 +170,7 @@ class RekapitulasiController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show()
@@ -93,17 +189,17 @@ class RekapitulasiController extends Controller
     }
 
     public function detail()
-    {   
+    {
         $id_user = auth()->user()->id;
         $user = User::find($id_user);
         $role_user = RoleUser::find($id_user);
-        return view('user.rekapitulasi.detail', compact('user','role_user'));
+        return view('user.rekapitulasi.detail', compact('user', 'role_user'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -115,8 +211,8 @@ class RekapitulasiController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -173,7 +269,7 @@ class RekapitulasiController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

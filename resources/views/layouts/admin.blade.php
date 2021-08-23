@@ -39,7 +39,7 @@
             <span class="navbar-brand-full"><img class="img-fluid" src="{{asset('images/Logo.png')}}" alt=""></span>
             <span class="navbar-brand-minimized"><img class="img-fluid" src="{{asset('images/Logo.png')}}" alt=""></span>
         </a>
-        <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show">
+        <button class="navbar-toggler sidebar-minimizer d-md-down-none" type="button" data-toggle="sidebar-lg-show" id="navbar-toggler">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -230,6 +230,19 @@
   $.fn.dataTable.ext.classes.sPageButton = '';
 });
 
+    </script>
+        <script>
+        var isSidebarOpen = true;
+        $("#navbar-toggler").click(function() {
+            console.log("Hello")
+            if (isSidebarOpen) {
+                $(".navbar-brand").css("display", "none");
+                isSidebarOpen = false;
+            } else {
+                $(".navbar-brand").css("display", "inline-flex");
+                isSidebarOpen = true;
+            }
+        })
     </script>
     
     @yield('scripts')

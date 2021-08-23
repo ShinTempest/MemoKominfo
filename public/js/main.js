@@ -1,24 +1,26 @@
 $(document).ready(function () {
   window._token = $('meta[name="csrf-token"]').attr('content')
 
-  moment.updateLocale('en', {
-    week: {dow: 1} // Monday is the first day of the week
-  })
-
   $('.date').datetimepicker({
     format: 'YYYY-MM-DD',
-    locale: 'en',
+    locale: 'id',
     icons: {
       up: 'fas fa-chevron-up',
       down: 'fas fa-chevron-down',
       previous: 'fas fa-chevron-left',
       next: 'fas fa-chevron-right'
-    }
-  })
+    },
+    inline: true
+  }).on('dp.change', function (e) {
+      var tzoffset = (new Date()).getTimezoneOffset() * 60000;
+      var date = $('.date').data("DateTimePicker").date()._d;
+      var localIsoDate = new Date(date - tzoffset).toISOString().slice(0, 10)
+      updateChart(localIsoDate);
+  });
 
   $('.datetime').datetimepicker({
     format: 'YYYY-MM-DD HH:mm:ss',
-    locale: 'en',
+    locale: 'id',
     sideBySide: true,
     icons: {
       up: 'fas fa-chevron-up',
@@ -30,7 +32,8 @@ $(document).ready(function () {
 
   $('.timepicker').datetimepicker({
     format: 'HH:mm:ss',
-    icons: {
+    locale: 'id',
+      icons: {
       up: 'fas fa-chevron-up',
       down: 'fas fa-chevron-down',
       previous: 'fas fa-chevron-left',
@@ -73,21 +76,21 @@ $('button.sidebar-toggler').click(function () {
 function readFile(input) {
   if (input.files && input.files[0]) {
   var reader = new FileReader();
-  
+
   reader.onload = function (e) {
-  var htmlPreview = 
+  var htmlPreview =
   '<img width="200" src="' + e.target.result + '" />'+
   '<p>' + input.files[0].name + '</p>';
   var wrapperZone = $(input).parent();
   var previewZone = $(input).parent().parent().find('.preview-zone');
   var boxZone = $(input).parent().parent().find('.preview-zone').find('.box').find('.box-body');
-  
+
   wrapperZone.removeClass('dragover');
   previewZone.removeClass('hidden');
   boxZone.empty();
   boxZone.append(htmlPreview);
   };
-  
+
   reader.readAsDataURL(input.files[0]);
   }
  }
